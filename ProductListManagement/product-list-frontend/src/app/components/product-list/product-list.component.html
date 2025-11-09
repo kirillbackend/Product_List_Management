@@ -1,0 +1,93 @@
+<div class="container">
+  <nav class="navbar">
+    <h1>Product Management</h1>
+    <button class="btn btn-danger" (click)="onLogout()">Logout</button>
+  </nav>
+
+  <div class="header">
+    <h2>Products</h2>
+    <button class="btn btn-primary" (click)="onCreateProduct()">Create Product</button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-card">
+    <h3>Filters</h3>
+    <form [formGroup]="filterForm" (ngSubmit)="onFilterChange()">
+      <div class="filter-row">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            class="form-control"
+            placeholder="Search by name"
+            (input)="onFilterChange()"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="minPrice">Min Price</label>
+          <input
+            type="number"
+            id="minPrice"
+            formControlName="minPrice"
+            class="form-control"
+            placeholder="Min price"
+            (input)="onFilterChange()"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="maxPrice">Max Price</label>
+          <input
+            type="number"
+            id="maxPrice"
+            formControlName="maxPrice"
+            class="form-control"
+            placeholder="Max price"
+            (input)="onFilterChange()"
+          >
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">Loading...</div>
+
+  <!-- Products Table -->
+  <div *ngIf="!loading" class="table-card">
+    <table class="products-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products" class="product-row">
+          <td>{{ product.name }}</td>
+          <td>${{ product.price.toFixed(2) }}</td>
+          <td>
+            <button 
+              class="btn btn-warning"
+              (click)="onEditProduct(product.id)"
+            >
+              Edit
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="products.length === 0">
+          <td colspan="3" class="no-products">No products found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
